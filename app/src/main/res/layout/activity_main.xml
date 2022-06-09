@@ -1,18 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Views.MainActivity">
+    <com.google.android.material.card.MaterialCardView
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        app:contentPadding="20dp"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="8dp"
+        app:rippleColor="@color/teal_200"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+<EditText
+    android:id="@+id/gamecodesearch"
+    android:layout_gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+<Button
+    android:id="@+id/searchgamecodebtn"
+    android:layout_gravity="center_horizontal"
+    android:text="Search game code"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/showgamecodedetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.card.MaterialCardView
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        app:contentPadding="20dp"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="8dp"
+        app:rippleColor="@color/teal_200"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/gamesearch"
+        android:layout_gravity="center_horizontal"
 
-    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/searchcodebtn"
+        android:layout_gravity="center_horizontal"
+        android:text="Search game name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/searchallcodebtn"
+                android:layout_gravity="center_horizontal"
+                android:text="Search all game name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/showgamedetail"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/></LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

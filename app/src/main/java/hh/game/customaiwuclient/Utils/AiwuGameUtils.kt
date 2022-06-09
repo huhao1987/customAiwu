@@ -4,8 +4,9 @@ import com.aiwu.core.AIWUJNIUtils
 import java.util.*
 
 class AiwuGameUtils {
+    data class SignDetail(val Time:Long,val Sign:String)
     companion object{
-        fun getGameDetail(gameId:String):String{
+        fun getSign(gameId:String):SignDetail{
             var treeMap= TreeMap<String,String>()
             var time=System.currentTimeMillis()/1000
             treeMap.put("Serial","00000000-28fb-4bae-ffff-ffffef05ac4a")
@@ -22,7 +23,7 @@ class AiwuGameUtils {
                 sbuilder.append("&")
             }
             var sign=AIWUJNIUtils().onCreate().wlbHt(sbuilder.toString(),time)
-            return sbuilder.toString()+"Sign=$sign"
+            return SignDetail(time,sign)
         }
     }
 }

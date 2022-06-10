@@ -17,7 +17,7 @@ import retrofit2.Response
 class MainViewModel:ViewModel() {
     var detail:MutableLiveData<Detail>?=null
     var searchResult:MutableLiveData<SearchResult>?=null
-    var searchresultlist=MutableLiveData<ArrayList<SearchResult>>()
+    var searchresultlist=MutableLiveData<ArrayList<SearchResult.Data>>()
     fun getDetail(packagename:String):LiveData<Detail>?{
         detail=MutableLiveData()
         GeRespo.getDetail(packagename,object:Callback<Detail>{
@@ -46,13 +46,16 @@ class MainViewModel:ViewModel() {
         return searchResult
     }
 
-    fun getAllSearch(searchnames:ArrayList<String>):MutableLiveData<ArrayList<SearchResult>>{
+    fun getAllSearch(searchnames:ArrayList<String>):MutableLiveData<ArrayList<SearchResult.Data>>{
         GlobalScope.launch {
-            var temp=ArrayList<SearchResult>()
-            for(a in 0..10){
-                var t=GeRespo.SearchInstance()
-                    .create(AiwuService::class.java).getSearchResult(Key = searchnames[a]).execute().body()!!
-                temp.add(t)
+            var temp=ArrayList<SearchResult.Data>()
+            for(a in 0..3){
+                var t= GeRespo.SearchInstance()
+                    .create(AiwuService::class.java).getSearchResult(Key = searchnames[a]).execute().body()!!.data?.get(0)
+                t?.aiWuCheat=GeRespo.DetailInstance().create(AiwuService::class.java).getCheatCode(Id = 28910).execute().also {
+                    Log.d("thenetwork::",it.message())
+                }.body()
+                temp.add(t!!)
             }
 //        searchnames.forEach {
 //
@@ -62,4 +65,6 @@ class MainViewModel:ViewModel() {
 
         return searchresultlist
     }
+
+
 }

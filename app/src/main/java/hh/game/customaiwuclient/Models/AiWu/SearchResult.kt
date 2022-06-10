@@ -2,6 +2,7 @@ package hh.game.customaiwuclient.Models
 
 
 import com.google.gson.annotations.SerializedName
+import hh.gametool.citra_cheat_tool.Beans.AiWu.AiWuCheat
 
 data class SearchResult(
     @SerializedName("Code")
@@ -23,7 +24,7 @@ data class SearchResult(
         @SerializedName("Edition")
         var edition: String?,
         @SerializedName("EmuId")
-        var emuId: String?,
+        var emuId: Int,
         @SerializedName("FileLink")
         var fileLink: String?,
         @SerializedName("FileSize")
@@ -49,6 +50,7 @@ data class SearchResult(
         @SerializedName("Title")
         var title: String?,
         @SerializedName("UnZipSize")
-        var unZipSize: String?
+        var unZipSize: String?,
+        var aiWuCheat: AiWuCheat?=null
     )
 }

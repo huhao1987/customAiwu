@@ -3,6 +3,7 @@ package hh.game.customaiwuclient.retrofit
 import hh.game.customaiwuclient.Models.Detail
 import hh.game.customaiwuclient.Models.SearchResult
 import hh.game.customaiwuclient.Utils.AiwuGameUtils
+import hh.gametool.citra_cheat_tool.Beans.AiWu.AiWuCheat
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,16 +14,14 @@ class GeRespo {
     companion object {
         private var retrofit:Retrofit?=null
         fun DetailInstance(): Retrofit {
-            if(retrofit==null)
             retrofit = Retrofit.Builder()
-                .baseUrl("https://service.25game.com/v2/App/")
+                .baseUrl("https://service.25game.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             return retrofit!!
         }
 
         fun SearchInstance():Retrofit{
-            if(retrofit==null)
                 retrofit = Retrofit.Builder()
                     .baseUrl("https://search.25game.com/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -52,7 +51,18 @@ class GeRespo {
                 override fun onFailure(call: Call<SearchResult>, t: Throwable) {
                     callback.onFailure(call,t)
                 }
+            })
+        }
 
+        fun getCheatCode(emuid:Int,callback: Callback<AiWuCheat>){
+            DetailInstance().create(AiwuService::class.java).getCheatCode(Id = emuid).enqueue(object:Callback<AiWuCheat> {
+                override fun onResponse(call: Call<AiWuCheat>, response: Response<AiWuCheat>) {
+                    callback.onResponse(call, response)
+                }
+
+                override fun onFailure(call: Call<AiWuCheat>, t: Throwable) {
+                    callback.onFailure(call, t)
+                }
             })
         }
     }

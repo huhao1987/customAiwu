@@ -9,11 +9,9 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModelProvider
 import com.anggrayudi.storage.SimpleStorageHelper
 import com.anggrayudi.storage.extension.openOutputStream
-import com.google.gson.Gson
 import hh.game.customaiwuclient.PermissionUtils
 import hh.game.customaiwuclient.VM.MainViewModel
 import hh.game.customaiwuclient.databinding.ActivityMainBinding
-import hh.gametool.citra_cheat_tool.Beans.AiWu.AiWuCheat
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -45,8 +43,18 @@ class MainActivity : AppCompatActivity() {
         binding.searchallcodebtn.setOnClickListener {
             viewmodel.getAllSearch(a!!).observe(this,{
                 it.forEach {
-                        it.aiWuCheat
-                        createCheatFile(createFolder(f!!,removePunctuations(it.title!!))!!,it.packageName!!,"testing")
+                        var cheatdetail=it.aiWuOnlineCheat
+                    cheatdetail?.apply {
+                        if(this.data?.aiwuCheat!=null) {
+                            var cheat=""
+                            this.data!!.aiwuCheat.
+                            createCheatFile(
+                                createFolder(f!!, removePunctuations(it.title!!))!!,
+                                it.packageName!!,
+                                "testing"
+                            )
+                        }
+                    }
 
                 }
             })

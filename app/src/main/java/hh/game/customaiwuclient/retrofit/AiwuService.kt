@@ -1,8 +1,10 @@
 package hh.game.customaiwuclient.retrofit
 
+import hh.game.customaiwuclient.Models.AiWu.AiWuOnlineCheat
 import hh.game.customaiwuclient.Models.Detail
 import hh.game.customaiwuclient.Models.SearchResult
 import hh.gametool.citra_cheat_tool.Beans.AiWu.AiWuCheat
+import hh.gametool.citra_cheat_tool.Beans.AiWu.aiWuCheatList
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -24,7 +26,7 @@ interface AiwuService {
         @Query("VersionCode")VersionCode:String="11300",
         @Query("ApiVersionCode")ApiVersionCode:Int=0,
         @Query("Id")Id:Int=0
-    ): Call<AiWuCheat>
+    ): Call<AiWuOnlineCheat>
 
 
     @FormUrlEncoded

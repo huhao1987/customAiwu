@@ -1,9 +1,11 @@
 package hh.game.customaiwuclient.retrofit
 
+import hh.game.customaiwuclient.Models.AiWu.AiWuOnlineCheat
 import hh.game.customaiwuclient.Models.Detail
 import hh.game.customaiwuclient.Models.SearchResult
 import hh.game.customaiwuclient.Utils.AiwuGameUtils
 import hh.gametool.citra_cheat_tool.Beans.AiWu.AiWuCheat
+import hh.gametool.citra_cheat_tool.Beans.AiWu.aiWuCheatList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,13 +56,13 @@ class GeRespo {
             })
         }
 
-        fun getCheatCode(emuid:Int,callback: Callback<AiWuCheat>){
-            DetailInstance().create(AiwuService::class.java).getCheatCode(Id = emuid).enqueue(object:Callback<AiWuCheat> {
-                override fun onResponse(call: Call<AiWuCheat>, response: Response<AiWuCheat>) {
+        fun getCheatCode(emuid:Int,callback: Callback<AiWuOnlineCheat>){
+            DetailInstance().create(AiwuService::class.java).getCheatCode(Id = emuid).enqueue(object:Callback<AiWuOnlineCheat> {
+                override fun onResponse(call: Call<AiWuOnlineCheat>, response: Response<AiWuOnlineCheat>) {
                     callback.onResponse(call, response)
                 }
 
-                override fun onFailure(call: Call<AiWuCheat>, t: Throwable) {
+                override fun onFailure(call: Call<AiWuOnlineCheat>, t: Throwable) {
                     callback.onFailure(call, t)
                 }
             })

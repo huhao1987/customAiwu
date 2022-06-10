@@ -52,14 +52,11 @@ class MainViewModel:ViewModel() {
             for(a in 0..3){
                 var t= GeRespo.SearchInstance()
                     .create(AiwuService::class.java).getSearchResult(Key = searchnames[a]).execute().body()!!.data?.get(0)
-                t?.aiWuCheat=GeRespo.DetailInstance().create(AiwuService::class.java).getCheatCode(Id = 28910).execute().also {
+                t?.aiWuOnlineCheat=GeRespo.DetailInstance().create(AiwuService::class.java).getCheatCode(Id = 28910).execute().also {
                     Log.d("thenetwork::",it.message())
                 }.body()
                 temp.add(t!!)
             }
-//        searchnames.forEach {
-//
-//        }
             searchresultlist.postValue(temp)
         }
 

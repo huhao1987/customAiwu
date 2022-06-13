@@ -49,10 +49,10 @@ class MainViewModel:ViewModel() {
     fun getAllSearch(searchnames:ArrayList<String>):MutableLiveData<ArrayList<SearchResult.Data>>{
         GlobalScope.launch {
             var temp=ArrayList<SearchResult.Data>()
-            for(a in 0..3){
+            for(a in 239..242){
                 var t= GeRespo.SearchInstance()
                     .create(AiwuService::class.java).getSearchResult(Key = searchnames[a]).execute().body()!!.data?.get(0)
-                t?.aiWuOnlineCheat=GeRespo.DetailInstance().create(AiwuService::class.java).getCheatCode(Id = 28910).execute().also {
+                t?.aiWuOnlineCheat=GeRespo.DetailInstance().create(AiwuService::class.java).getCheatCode(Id = t!!.emuId).execute().also {
                     Log.d("thenetwork::",it.message())
                 }.body()
                 temp.add(t!!)

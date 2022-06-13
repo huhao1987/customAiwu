@@ -6,6 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Views.MainActivity">
+    <ProgressBar
+        android:id="@+id/loading"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <com.google.android.material.card.MaterialCardView
         android:orientation="vertical"
         android:layout_marginLeft="5dp"

@@ -3,12 +3,15 @@ package hh.game.customaiwuclient.Views
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModelProvider
 import com.anggrayudi.storage.SimpleStorageHelper
 import com.anggrayudi.storage.extension.openOutputStream
+import hh.game.customaiwuclient.Models.AiWu.AiWuOnlineCheat
+import hh.game.customaiwuclient.Models.AiWu.UserCheat
 import hh.game.customaiwuclient.PermissionUtils
 import hh.game.customaiwuclient.VM.MainViewModel
 import hh.game.customaiwuclient.databinding.ActivityMainBinding
@@ -41,22 +44,23 @@ class MainActivity : AppCompatActivity() {
                 })
         }
         binding.searchallcodebtn.setOnClickListener {
+            binding.loading.visibility= View.VISIBLE
             viewmodel.getAllSearch(a!!).observe(this,{
                 it.forEach {
+
                         var cheatdetail=it.aiWuOnlineCheat
                     cheatdetail?.apply {
-                        if(this.data?.aiwuCheat!=null) {
-                            var cheat=""
-                            this.data!!.aiwuCheat.
+                        var processdata=processData(this.data)
+                        if(!processdata.equals("")){
                             createCheatFile(
                                 createFolder(f!!, removePunctuations(it.title!!))!!,
                                 it.packageName!!,
-                                "testing"
+                                processdata
                             )
                         }
                     }
-
                 }
+                binding.loading.visibility=View.GONE
             })
         }
         storageHelper.onFolderSelected={
@@ -83,6 +87,51 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun covertData(s:String,userCheat: AiWuOnlineCheat.Data.AiwuCheat?):String{
+        var str=s
+        userCheat?.apply {
+            if (code != null) {
+                str += "[${userCheat.title}]\n"
+                var cheatlist = code!!.split(",")
+                cheatlist.forEach {
+                    str += it.replace("-", " ") + "\n"
+                }
+
+            }
+        }
+        return str
+    }
+    private fun covertData(s:String,userCheat: AiWuOnlineCheat.Data.UserCheat?):String{
+        var str=s
+        userCheat?.apply {
+            if (code != null) {
+                str += "[${userCheat.title}]\n"
+                var cheatlist = code!!.split(",")
+                cheatlist.forEach {
+                    str += it.replace("-", " ") + "\n"
+                }
+
+            }
+        }
+        return str
+    }
+    private fun processData(data:AiWuOnlineCheat.Data?):String{
+        if (data != null) {
+            if (data!!.userCheat != null || data!!.aiwuCheat != null) {
+                var str = "*整理自爱吾游戏宝盒，3ds百度贴吧\n"
+                data.aiwuCheat?.forEach {
+                    str=covertData(str,it)
+                }
+                data.userCheat?.forEach {
+                    str=covertData(str,it)
+                }
+                return str
+            } else {
+                return ""
+            }
+        } else
+            return super.toString()
+    }
     private fun createFolder(basefolder:DocumentFile,name:String):DocumentFile?= basefolder.createDirectory(name)
 
     private fun createCheatFile(folder:DocumentFile,filename:String,content:String){

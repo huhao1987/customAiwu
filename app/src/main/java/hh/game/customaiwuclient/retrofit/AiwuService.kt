@@ -21,11 +21,12 @@ interface AiwuService {
         @Field("Sign")Sign:String
         ): Call<Detail>
 
-    @GET("EmuInit.aspx")
+    @FormUrlEncoded
+    @POST("EmuInit.aspx")
     fun getCheatCode(
-        @Query("VersionCode")VersionCode:String="11300",
-        @Query("ApiVersionCode")ApiVersionCode:Int=0,
-        @Query("Id")Id:Int=0
+        @Field("VersionCode")VersionCode:String="11300",
+        @Field("ApiVersionCode")ApiVersionCode:Int=1,
+        @Field("Id")Id:Int=0
     ): Call<AiWuOnlineCheat>
 
 

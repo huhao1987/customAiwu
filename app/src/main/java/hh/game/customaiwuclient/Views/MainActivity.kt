@@ -4,17 +4,30 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.anggrayudi.storage.SimpleStorageHelper
 import com.anggrayudi.storage.extension.openOutputStream
+import com.blankj.utilcode.util.KeyboardUtils
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.header.MaterialHeader
+import hh.game.customaiwuclient.EmuType
 import hh.game.customaiwuclient.Models.AiWu.AiWuOnlineCheat
 import hh.game.customaiwuclient.Models.AiWu.UserCheat
+import hh.game.customaiwuclient.Models.SearchResult
 import hh.game.customaiwuclient.PermissionUtils
 import hh.game.customaiwuclient.VM.MainViewModel
+import hh.game.customaiwuclient.adapters.GameDetailAdapter
+import hh.game.customaiwuclient.adapters.SpinerAdapter
+import hh.game.customaiwuclient.adapters.onClickListener
 import hh.game.customaiwuclient.databinding.ActivityMainBinding
+import org.angmarch.views.NiceSpinner
+import org.angmarch.views.OnSpinnerItemSelectedListener
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -25,6 +38,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding:ActivityMainBinding
     private var f:DocumentFile?=null
     private val PUNCT_SYMBOLS = Pattern.compile("[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~]")
+    private var adapter:GameDetailAdapter?=null
+    private var page=1
+    private var keyWord:String?=null
+    //All type
+    private var gameType=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +50,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         var a=getFromAssets("gamelist")
         var viewmodel=ViewModelProvider(this).get(MainViewModel::class.java)
-        storageHelper.openFolderPicker()
+//        storageHelper.openFolderPicker()
         binding.searchgamecodebtn.setOnClickListener {
             if(!binding.gamecodesearch.text.equals(""))
                 viewmodel.getDetail(binding.gamecodesearch.text.toString())?.observe(this,{
                     when(it.code){
-                        0->binding.showgamecodedetail.text="${it.data?.emuId} ${it.data?.packageName} ${it.data?.title}"
+                        0->{binding.showgamecodedetail.text="${it.data?.emuId} ${it.data?.packageName} ${it.data?.title}"
+                            }
                         1->binding.showgamecodedetail.text=it.message!!
                         500->binding.showgamecodedetail.text=it.message!!
                     }
@@ -67,23 +86,66 @@ class MainActivity : AppCompatActivity() {
             requestCode, folder ->
             f=folder
         }
-        binding.searchcodebtn.setOnClickListener {
-            if(!binding.gamesearch.text.equals(""))
-                viewmodel.getSearch(binding.gamesearch.text.toString())?.observe(this,{
+
+        binding.typeselect.attachDataSource(EmuType.gameTypelist)
+        binding.typeselect.setOnSpinnerItemSelectedListener(object:OnSpinnerItemSelectedListener{
+            override fun onItemSelected(
+                parent: NiceSpinner?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                gameType=EmuType.gameTypelist.get(position).second
+            }
+
+        })
+
+        binding.refreshLayout.let {
+            it.setRefreshFooter(ClassicsFooter(this))
+            it.setOnLoadMoreListener { refreshlayout ->
+                KeyboardUtils.hideSoftInput(this)
+                viewmodel.getSearch(keyWord!!,page,gameType)?.observe(this,{
                     when(it.code){
                         0->{
                             it.data?.apply {
                                 if(this.size>0) {
-                                    this[0]?.let {
-                                        binding.showgamedetail.text ="${it.title} ${it.emuId}"
-
-                                    }
+                                    adapter?.updateList(this)
+                                    page++
                                 }
                             }
                         }
+                    }
+                    refreshlayout.finishLoadMore(true)
+                })
+            }
+        }
+        binding.searchcodebtn.setOnClickListener {
+            if(!binding.gamesearch.text.equals("")){
+                keyWord=binding.gamesearch.text.toString()
+                viewmodel.getSearch(keyWord!!,page,gameType)?.observe(this,{
+                    when(it.code){
+                        0->{
+                            it.data?.apply {
+                                if(this.size>0) {
+                                    adapter= GameDetailAdapter(this@MainActivity,this,object:onClickListener{
+                                        override fun onclick(position: Int, data: SearchResult.Data?) {
 
+                                        }
+                                    })
+
+                                    binding.gamelist.layoutManager=LinearLayoutManager(this@MainActivity)
+                                    binding.gamelist.adapter=adapter
+                                    page++
+                                }
+                                else {
+                                    adapter?.updateList(ArrayList())
+                                    Toast.makeText(this@MainActivity,"没有搜索到游戏",Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        }
                     }
                 })
+            }
         }
     }
 

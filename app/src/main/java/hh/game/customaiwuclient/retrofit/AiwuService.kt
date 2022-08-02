@@ -13,7 +13,7 @@ interface AiwuService {
     @POST("v2/App/AppGet.aspx")
     fun getDetail(
         @Field("Serial")Serial:String="00000000-28fb-4bae-ffff-ffffef05ac4a",
-        @Field("VersionCode")VersionCode:String="2353",
+        @Field("VersionCode")VersionCode:String="2360",
         @Field("isLogin")isLogin:Int=0,
         @Field("Act")Act:String="getEmuGamebyPackageName",
         @Field("PackageName")PackageName:String,
@@ -34,12 +34,47 @@ interface AiwuService {
     @POST("Search_Market_v2.aspx")
     fun getSearchResult(
         @Field("Serial")Serial:String="00000000-28fb-4bae-ffff-ffffef05ac4a",
-        @Field("VersionCode")VersionCode:String="2353",
+        @Field("VersionCode")VersionCode:String="2360",
         @Field("isLogin")isLogin:Int=0,
         @Field("Act")Act:String="Page",
         @Field("Page")Page:Int=1,
+        @Field("Channel")Channel:String="25az",
+
+        /**
+         * IndexType could be the search type
+         * 0 is for all games
+         * 2 is emu
+         * 1 is for Android games
+         * ClassType is for emu type
+         * 0 is for everything
+         * 1 is for Java
+         * 2 is for PSP
+         * 3 is for GBA
+         * 4 is for FC
+         * 6 is for SFC
+         * 7 is for Mame
+         * 8 is for mame+
+         * 9 is for NDS
+         * 10 is for GBC
+         * 11 is for MD
+         * 12 is for 3ds
+         * 13 is for wii
+         * NGC 14
+         * ONS 15
+         * easyRPG 16
+         * PS1 17
+         * DC 18
+         * N64 19
+         * SS 20
+         * OpenBOR 21
+         * PS2 22
+         * SMS 23
+         * NS 24
+         * PCE 25
+         * DOS 26
+         */
         @Field("IndexType")IndexType:Int=2,
-        @Field("ClassType")ClassType:Int=12,
+        @Field("ClassType")ClassType:Int=0,
         @Field("Key")Key:String
     ): Call<SearchResult>
 }

@@ -1,11 +1,14 @@
 package hh.game.customaiwuclient.Models
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import hh.game.customaiwuclient.Models.AiWu.AiWuOnlineCheat
 import hh.gametool.citra_cheat_tool.Beans.AiWu.AiWuCheat
 import hh.gametool.citra_cheat_tool.Beans.AiWu.aiWuCheatList
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class SearchResult(
     @SerializedName("Code")
     var code: Int,
@@ -17,7 +20,9 @@ data class SearchResult(
     var pageSize: String?,
     @SerializedName("TotalSize")
     var totalSize: String?
-) {
+): Parcelable {
+
+    @Parcelize
     data class Data(
         @SerializedName("Category")
         var category: String?,
@@ -54,5 +59,5 @@ data class SearchResult(
         @SerializedName("UnZipSize")
         var unZipSize: String?,
         var aiWuOnlineCheat: AiWuOnlineCheat?=null
-    )
+    ):Parcelable
 }

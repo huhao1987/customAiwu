@@ -32,9 +32,9 @@ class MainViewModel:ViewModel() {
         return detail
     }
 
-    fun getSearch(keyword:String,page:Int=1):LiveData<SearchResult>?{
+    fun getSearch(keyword:String,page:Int=1,classType:Int):LiveData<SearchResult>?{
         searchResult=MutableLiveData()
-        GeRespo.getSearchResult(keyword,page,object:Callback<SearchResult>{
+        GeRespo.getSearchResult(keyword,page,classType,object:Callback<SearchResult>{
             override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
                 searchResult?.postValue(response.body())
             }
@@ -51,7 +51,7 @@ class MainViewModel:ViewModel() {
             var temp=ArrayList<SearchResult.Data>()
             for(a in 239..242){
                 var t= GeRespo.SearchInstance()
-                    .create(AiwuService::class.java).getSearchResult(Key = searchnames[a]).execute().body()!!.data?.get(0)
+                    .create(AiwuService::class.java).getSearchResult(Key = searchnames[a], ClassType = 0).execute().body()!!.data?.get(0)
                 t?.aiWuOnlineCheat=GeRespo.DetailInstance().create(AiwuService::class.java).getCheatCode(Id = t!!.emuId).execute().also {
                     Log.d("thenetwork::",it.message())
                 }.body()

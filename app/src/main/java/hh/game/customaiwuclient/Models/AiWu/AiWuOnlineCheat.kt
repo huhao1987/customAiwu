@@ -1,14 +1,19 @@
 package hh.game.customaiwuclient.Models.AiWu
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class AiWuOnlineCheat(
     @SerializedName("Code")
     var code: String?,
     @SerializedName("Data")
     var `data`: Data?
-) {
+): Parcelable {
+
+    @Parcelize
     data class Data(
         @SerializedName("AiwuCheat")
         var aiwuCheat: List<AiwuCheat?>?,
@@ -20,7 +25,8 @@ data class AiWuOnlineCheat(
         var romName: String?,
         @SerializedName("UserCheat")
         var userCheat: List<UserCheat?>?
-    ) {
+    ):Parcelable {
+        @Parcelize
         data class AiwuCheat(
             @SerializedName("Code")
             var code: String?,
@@ -36,7 +42,8 @@ data class AiWuOnlineCheat(
             var title: String?,
             @SerializedName("TypeId")
             var typeId: String?
-        ) {
+        ):Parcelable {
+            @Parcelize
             data class customChest(
                 @SerializedName("Code")
                 var code: String?,
@@ -62,9 +69,9 @@ data class AiWuOnlineCheat(
                 var typeId: Int?,
                 @SerializedName("UserId")
                 var userId: Int?
-            )
+            ):Parcelable
         }
-
+        @Parcelize
         data class UserCheat(
             @SerializedName("Code")
             var code: String?,
@@ -76,6 +83,6 @@ data class AiWuOnlineCheat(
             var status: String?,
             @SerializedName("Title")
             var title: String?
-        )
+        ):Parcelable
     }
 }

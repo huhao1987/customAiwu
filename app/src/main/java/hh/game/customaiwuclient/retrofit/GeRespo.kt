@@ -58,9 +58,9 @@ class GeRespo {
                 })
         }
 
-        fun getSearchResult(keyword: String, page: Int = 1, callback: Callback<SearchResult>) {
+        fun getSearchResult(keyword: String, page: Int = 1,classType:Int, callback: Callback<SearchResult>) {
             SearchInstance().create(AiwuService::class.java)
-                .getSearchResult(Page = page, Key = keyword)
+                .getSearchResult(Page = page, Key = keyword, ClassType = classType)
                 .enqueue(object : Callback<SearchResult> {
                     override fun onResponse(
                         call: Call<SearchResult>,
